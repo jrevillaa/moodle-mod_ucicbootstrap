@@ -1,4 +1,4 @@
-<?php    
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -131,7 +131,7 @@ function ucicbootstrap_get_coursemodule_info($coursemodule) {
                 $info->content = ucicbootstrap_standard($ucicbootstrap->name, $ucicbootstrap->title,
                         format_module_intro('ucicbootstrap', $ucicbootstrap, $coursemodule->id, false), $ucicbootstrap->bootstrapicon);
             break;
-        
+
             case 3:
                 $info->content = ucicbootstrap_blockquote($ucicbootstrap->name, $ucicbootstrap->title,
                         format_module_intro('ucicbootstrap', $ucicbootstrap, $coursemodule->id, false), $ucicbootstrap->bootstrapicon);
@@ -197,9 +197,36 @@ function ucicbootstrap_supports($feature) {
 function ucicbootstrap_standard($name, $title, $content, $icon) {
     $output = html_writer::start_tag('div');
 
-    $output .= html_writer::tag('h4', '<i class="fa '.$icon.'"></i>'.$title);
 
-    $output .= html_writer::tag('div', $content);
+    $output .= html_writer::tag('h4',
+        html_writer::tag('i', '', array(
+            'class' => 'fa ' . $icon,
+            'style' => 'font-size: 24px; color: #ff0000; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem; flex-shrink: 0;'
+        )) .
+        html_writer::tag('span', $title, array(
+            'style' => 'line-height: 1.4; margin-top: 8px;'
+        )),
+        array(
+            'class' => 'activity-style-header mb-3',
+            'style' => 'display: flex; align-items: flex-start; font-size: 1rem; font-weight: 500; margin: 0;'
+        )
+    );
+
+
+    //$output .= html_writer::tag('h4', '<i class="fa '.$icon.'"></i>'.$title);
+
+
+    $output .=  html_writer::div(
+        html_writer::div(
+            $content,
+            'ratio ratio-16x9',
+            array('style' => 'max-width: 800px; width: 100%;')
+        ),
+        'd-flex justify-content-center mb-3'
+    );
+
+
+    //$output .= html_writer::tag('div', $content);
 
     $output .= html_writer::end_tag('div');
 
@@ -271,7 +298,7 @@ function ucicbootstrap_modal_outline($modalname, $modaltitle, $modalcontent, $ic
     ));
 
     $output .= '<i class="fa '.$icon.'"></i>';
-    
+
     $output .= $modaltitle;
 
     $output .= html_writer::end_tag('h4');
@@ -316,7 +343,7 @@ function ucicbootstrap_modal_outline($modalname, $modaltitle, $modalcontent, $ic
 }
 
 function ucicbootstrap_modal_button($modalname, $modaltitle, $icon, $coursemodule = null, $ucicbootstrap = null, $course = null) {
-    
+
     $data = json_encode(array($coursemodule, $ucicbootstrap, $course));
 
     //$encrypted_data = mc_encrypt($data, ENCRYPTION_KEY);
@@ -325,7 +352,7 @@ function ucicbootstrap_modal_button($modalname, $modaltitle, $icon, $coursemodul
         'class' => 'activity-link',//btn btn-primary btn-lg',
         'data-toggle' => 'modal',
         'data-target' => '#'.$modalname,
-        //'data-info' => $encrypted_data, 
+        //'data-info' => $encrypted_data,
     ));
     $output .= '<i class="fa '.$icon.'"></i>';
     $output .= '<span class="instancename">' . $modaltitle . '</span>';
@@ -347,11 +374,11 @@ function ucicbootstrap_modal_button($modalname, $modaltitle, $icon, $coursemodul
 
 function ucicbootstrap_blockquote($name, $title, $content, $icon) {
     $output = html_writer::start_tag('blockquote');
-    
+
     $output .= html_writer::tag('h4', '<i class="fa '.$icon.'"></i>'.$title);
-    
+
     $output .= $content;
-    
+
     $output .= html_writer::end_tag('blockquote');
     return $output;
 }
